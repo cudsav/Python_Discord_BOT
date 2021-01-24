@@ -1,38 +1,23 @@
-import os
-
+# Import some necessary modules for this BOT.
 import asyncio
-
-try:
-
-  import discord
-  
-  from discord.ext import commands
-  
-except:
-
-  os.system("pip3 install discord.py")
-  
+import json
+import requests # "pip3 install requests"
+import discord # "pip3 install discord"
+from discord.ext import commands
 bot = commands.Bot(command_prefix = "")
-
-token = "" # Your Discord BOT token string
-
+DISCORD_BOT_TOKEN = "YOUR DISCORD TOKEN HERE"
 @bot.event
-
 async def on_ready():
-
-  print("BOT is online now.")
-  
+    print("BOT is online")
 @bot.event
-
 async def on_message(message):
-
-  if message.author.id == bot.user.id:
-    return
-    
-  else:
-  
-    if message.content == "ping":
-    
-      await message.channel.send("Pong")
-
-bot.run(token)
+    if message.author.id == bot.user.id:
+        return
+    else:
+        if message.content.startswith("!delete"): # You must set role as a admin for your BOT
+            await message.channel.purge(limit = int(message.content[8:]))
+        else:
+            req = requests.get(f"https://api.simsimi.net/v1/?text={message.content}") # You can add &lang=... for your BOT
+            res = json.loads(req.text)
+            await message.channel.send(res["messages"][0]["response"])
+bot.run(DISCORD_BOT_TOKEN)
