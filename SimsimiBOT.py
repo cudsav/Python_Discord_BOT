@@ -17,7 +17,7 @@ async def on_message(message):
         if message.content.startswith("!delete"): # You must set role as a admin for your BOT
             await message.channel.purge(limit = int(message.content[8:]))
         else:
-            req = requests.get(f"https://api.simsimi.net/v1/?text={message.content}") # You can add &lang=... for your BOT
+            req = requests.get(f"https://api.simsimi.net/v1/?text={message.content}") # You can add &lang=... to set your BOT's languages
             res = json.loads(req.text)
             await message.channel.send(res["messages"][0]["response"])
 bot.run(DISCORD_BOT_TOKEN)
