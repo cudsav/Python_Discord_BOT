@@ -16,6 +16,8 @@ async def on_message(message):
     else:
         if message.content.startswith("!delete"): # You must set role as a admin for your BOT
             await message.channel.purge(limit = int(message.content[8:]))
+        elif message.content == "!tag":
+            await message.channel.send("@everyone")
         else:
             req = requests.get(f"https://api.simsimi.net/v1/?text={message.content}") # You can add &lang=... to set your BOT's languages
             res = json.loads(req.text)
